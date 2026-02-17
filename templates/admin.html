@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+         background: linear-gradient(135deg, #4c628b, #141b30);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding-top: 50px;
+            margin: 0;
+           align-items: center;
+           height: 100vh;
+           
+}
+
+        
+        .container {
+            background-color: #feffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #141b30;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            width: 300px;
+            margin-left: 40px;            
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0f0f0f;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registered Users</h2>
+        <ul>
+            {% for user in users %}
+                <li>{{ user[0] }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('login') }}">Logout</a>
+    </div>
+</body>
+</html>
+
+
+
+
+ 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>{{ username }}'s Profile</title>
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --accent-yellow: #2563eb;
+            --dark-bg: #8f0e0e00;
+            --dark-secondary: #1a1a1a;
+        }
+
+        .profile-container {
+            max-width: 700px;
+            margin: 60px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .profile-header {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.2em;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            border-radius: 2px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            font-size: 1.6em;
+            color: #34495e;
+            text-align: left;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .history-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 18px 25px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            color: #000;
+        }
+
+        li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            border-color: #e0e7ff;
+        }
+
+        li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 4px;
+            background: #3498db;
+        }
+
+        li strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        p {
+            margin-top: 30px;
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .empty-history {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed #e0e0e0;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .delete-button {
+            margin-top: 20px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+
+        .gradient-nav {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #111111 100%);
+            border-bottom: 1px solid #333333;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    <nav class="navbar navbar-expand-lg navbar-dark gradient-nav">
+        <div class="container">
+            <a class="navbar-brand nav-brand d-flex align-items-center" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='LOGO.jpg') }}" 
+                     alt="Logo" 
+                     class="me-2"
+                     style="width: 60px; height: 50px;">
+                HealTech
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="ms-auto">
+                <a href="{{ url_for('logout') }}" class="btn btn-primary btn-sm fw-bold text-light">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Welcome, {{ username }}!</h1>
+        </div>
+
+        <div class="history-section">
+            <h2>Search History</h2>
+            {% if history %}
+                <ul>
+                    {% for entry in history %}
+                        <li>
+                            <strong>Symptoms:</strong> {{ entry[0] }}<br>
+                            <strong>Predicted Disease:</strong> {{ entry[1] }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <form method="POST" action="{{ url_for('delete_history') }}">
+                    <button type="submit" class="delete-button">Delete History</button>
+                </form>
+            {% else %}
+                <div class="empty-history">
+                    No search history yet. Start by making your first diagnosis!
+                </div>
+            {% endif %}
+        </div>
+
+        <p>{{ description }}</p>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
